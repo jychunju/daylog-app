@@ -4,14 +4,16 @@
   "private": true,
   "description": "Daylog calendar with Express and SQLite",
   "engines": {
-    "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+    "node": "24.x"
   },
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "test": "node --test test/*.test.js"
+    "test": "node --test test/*.test.js",
+    "build": "node scripts/build-public.js"
   },
   "dependencies": {
+    "@libsql/client": "^0.18.0",
     "express": "^5.1.0"
   },
   "devDependencies": {
