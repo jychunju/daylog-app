@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Daylog
 
 HTML·CSS·JavaScript 캘린더에 Node.js / Express REST API와 SQLite를 연결했습니다. 기존 민트색 디자인, 아이디 로그인, 월 이동, 임박한 할 일 강조, 감정 8개, 시간 스크롤 선택기를 유지합니다.
@@ -71,3 +72,7 @@ POST 본문 예시:
 기술 참고: [Express 공식 문서](https://expressjs.com/en/5x/api/express/), [Node.js SQLite 공식 문서](https://nodejs.org/api/sqlite.html).
 
 회원가입 화면에서 아이디를 입력하고 **중복 확인**을 눌러야 가입할 수 있습니다. 아이디를 바꾸면 다시 확인해야 합니다. 최종 가입 요청에서도 SQLite UNIQUE 제약으로 중복 계정을 차단합니다. 기존 기록 가져오기 기능은 제거했으며 이미 저장된 DB와 브라우저 원본 기록은 삭제하지 않습니다.
+=======
+# daylog-app
+daylog-app
+>>>>>>> 5218a2c5b63f7cb8db229dcce1741094bf45302d
