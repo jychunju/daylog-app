@@ -1,0 +1,20 @@
+{
+  "name": "daylog",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Daylog calendar with Express and SQLite",
+  "engines": {
+    "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "jsdom": "^30.1.3"
+  }
+}
