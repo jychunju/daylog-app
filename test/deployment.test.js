@@ -2,6 +2,8 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { once } = require('node:events');
+const { readFileSync } = require('node:fs');
+const path = require('node:path');
 const { createClient } = require('@libsql/client');
 const { createDatabase } = require('../database');
 const handler = require('../server');
@@ -13,6 +15,28 @@ test('Vercel requires a remote database and exports an Express handler', () => {
   assert.throws(() => createDatabase({ deployed: true, remoteUrl: '', authToken: '' }), /Vercel requires/);
   assert.throws(() => createDatabase({ deployed: true, remoteUrl: 'file:/tmp/daylog.sqlite', authToken: 'test' }), /must use/);
   assert.throws(() => createDatabase({ deployed: true, remoteUrl: 'libsql://test.invalid', authToken: '' }), /AUTH_TOKEN/);
+});
+
+test('HTML, CSS and JavaScript are served with correct types before database initialization', async t => {
+  const previous = process.env.VERCEL;
+  process.env.VERCEL = '1';
+  const server = handler.listen(0, '127.0.0.1');
+  await once(server, 'listening');
+  t.after(async () => {
+    await new Promise(resolve => server.close(resolve));
+    if (previous === undefined) delete process.env.VERCEL; else process.env.VERCEL = previous;
+  });
+  const base = `http://127.0.0.1:${server.address().port}`;
+  for (const [file, type] of [['index.html', 'text/html'], ['styles.css', 'text/css'], ['app.js', 'javascript']]) {
+    const response = await fetch(`${base}/${file}`);
+    assert.equal(response.status, 200);
+    assert.ok(response.headers.get('content-type').includes(type));
+    assert.equal(await response.text(), readFileSync(path.join(__dirname, '..', file), 'utf8'));
+    assert.equal(readFileSync(path.join(__dirname, '..', 'public', file), 'utf8'), readFileSync(path.join(__dirname, '..', file), 'utf8'));
+  }
+  const html = await (await fetch(base)).text();
+  assert.ok(html.includes('href="/styles.css"'));
+  assert.ok(html.includes('src="/app.js"'));
 });
 
 test('async libSQL adapter, HTTPS origin, secure session and cross-instance persistence', async t => {

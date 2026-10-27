@@ -71,7 +71,7 @@ npm run build
 npm test
 ```
 
-빌드는 루트의 `index.html`, `styles.css`, `app.js` **3개만** `public/`으로 복사합니다. Vercel은 이 폴더의 파일을 CDN으로 제공합니다. 화면을 수정할 때는 기존 루트 파일을 수정하세요. `public/`은 빌드 결과이며 Git에서 제외됩니다. 서버 파일·로컬 DB·환경변수는 정적 파일에 복사하지 않습니다.
+빌드는 루트의 `index.html`, `styles.css`, `app.js` **3개만** `public/`으로 복사합니다. Vercel은 이 폴더의 파일을 CDN으로 제공합니다. 화면을 수정할 때는 기존 루트 파일을 수정하고 `npm run build`를 실행하세요. 배포에서 정적 파일이 빠지지 않도록 `public/`도 Git에 포함합니다. HTML은 `/styles.css`, `/app.js`의 절대 경로를 사용합니다. CDN 대신 함수로 정적 파일 요청이 전달돼도 DB 설정과 관계없이 올바른 MIME 타입으로 응답합니다. 서버 파일·로컬 DB·환경변수는 정적 파일에 복사하지 않습니다.
 
 테스트는 임시 SQLite와 메모리 libSQL을 사용하며 실제 Turso 서버를 변경하지 않습니다. CRUD, 프론트엔드 fetch, 중복 가입, HTTPS Origin 검사, 보안 쿠키, 여러 앱 인스턴스의 데이터·세션·인증 횟수 공유를 검증합니다. 실제 원격 URL·토큰을 통한 연결과 Vercel 배포는 위 배포 확인 단계에서 확인해야 합니다.
 

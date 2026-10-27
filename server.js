@@ -226,6 +226,21 @@ function createApp(options = {}) {
 
 // Export an Express handler without opening a port or touching disk on import.
 const defaultApp = express();
+// Serve assets before database initialization as a fallback to Vercel's public CDN.
+// Literal paths let the function bundler include these files in its output.
+const staticFiles = {
+  '/': () => require('node:fs').readFileSync(path.join(__dirname, 'index.html')),
+  '/index.html': () => require('node:fs').readFileSync(path.join(__dirname, 'index.html')),
+  '/styles.css': () => require('node:fs').readFileSync(path.join(__dirname, 'styles.css')),
+  '/app.js': () => require('node:fs').readFileSync(path.join(__dirname, 'app.js'))
+};
+for (const [url, read] of Object.entries(staticFiles)) {
+  defaultApp.get(url, (req, res) => {
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.type(url.endsWith('.css') ? 'css' : url.endsWith('.js') ? 'js' : 'html').send(read());
+  });
+}
 let runtime;
 defaultApp.use((req, res, next) => {
   try {

@@ -7,4 +7,3 @@ data/
 .env.*
 !.env.example
 .vercel/
-public/
