@@ -1,2 +1,0 @@
-# daylog-app
-daylog-app
